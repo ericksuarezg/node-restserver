@@ -17,7 +17,7 @@ app.get('/usuarios', function(req, res) {
     limite = Number(limite);
 
     //busca usuarios con 'role'  de 'actor' y solo me retornara las propiedades 'nombre' 'email' 
-    Usuarios.find({ role: 'actor' }, 'nombre email') //el modelo define el metodo que busca los reguistros
+    Usuarios.find({ /* role: 'actor' */ }, 'nombre email') //el modelo define el metodo que busca los reguistros
         /* .skip(desde)
         .limit(limite) */
         .exec((err, usuarios) => { // ejecuta la query
