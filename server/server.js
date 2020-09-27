@@ -1,6 +1,9 @@
 const express = require('express');
+const mongoose = require('mongoose');
 require('./config/config');
-const app = express()
+
+const app = express();
+
 const bodyParser = require('body-parser');
 
 // midelweit para las peticiones con parametros 
@@ -9,36 +12,23 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // midelweit para las peticiones con parametros eb archivo jeson
 app.use(bodyParser.json())
 
-app.get('/usuarios', function(req, res) {
-    res.json('get usuario');
-})
-app.post('/usuarios', function(req, res) {
-    let body = req.body; //obtiene el cuerpo de la peticon del navegador 
+app.use(require('./routes/usuario')); //importando todo el archivo 'routs' dentro del midelwait
 
-    if (body.nombre === undefined) {
-        res.status(400).json({
-            ok: false,
-            mensaje: 'el nombre es necesario'
-        })
-    } else {
-        res.json({
-            persona: body
-        });
-    }
 
-})
+mongoose.connect(process.env.URLDB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true
+});
 
-// metodo 'put' para actualizar infromacion  
-app.put('/usuarios/:id', function(req, res) {
-    // con la propiedad 'params' del 'req' se obtienen los valores de los parametros enviados
-    let id = req.params.id
-    res.json({
-        id: id
-    });
-})
-app.delete('/usuarios', function(req, res) {
-    res.json('delete usuario');
-})
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+    console.log('conectado a la base de datos');
+});
+
+
 
 app.listen(process.env.PORT, () => {
     console.log(`escuchando peticiones por el puerto 3000`);
