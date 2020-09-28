@@ -22,7 +22,9 @@ let urlDB;
 if (process.env.NODE_ENV === 'dev') {
     urlDB = 'mongodb://localhost:27017/cafe';
 } else {
-    urlDB = 'mongodb+srv://ericson:JJ2y0Dn9Vj0SyB3H@cluster0.alcjq.mongodb.net/cafe';
+    urlDB = process.env.MONGO_URI; // esta variable'MONGO_URI' ser toma de 'heroku config:set"variable deentorno" '
+    //para este caso'mongodb+srv://ericson:JJ2y0Dn9Vj0SyB3H@cluster0.alcjq.mongodb.net/cafe' que
+    //es la ruta donde se encuenra la base de datos 
 }
 
 
