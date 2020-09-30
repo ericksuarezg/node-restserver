@@ -13,9 +13,31 @@ process.env.PORT = process.env.PORT || 3000; //o en produccion o en desarrollo
 process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
 
 
+//====================
+//Vencomiento del token
+//====================
+//60 segundos 
+//60 minutos 
+//24 horas
+//30 dias 
+
+process.env.CADUCIDAD_TOKEN = 60 * 60 * 24 * 30;
+
+//============================
+// clave o  'SEED' de autenticacion
+//============================
+
+process.env.SEED = process.env.SEED || 'este-es-el-seed-de-desarrolo';
+
+
+
+
+
+
 // ===========================
 //       base de datos
 // ===========================
+
 
 let urlDB;
 

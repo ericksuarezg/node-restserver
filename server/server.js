@@ -12,7 +12,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // midelweit para las peticiones con parametros eb archivo jeson
 app.use(bodyParser.json())
 
-app.use(require('./routes/usuario')); //importando todo el archivo 'routs' dentro del midelwait
+app.use(require('./routes/index')); //importando todo el archivo 'index' dentro del midelwait
+
 
 
 mongoose.connect(process.env.URLDB, {

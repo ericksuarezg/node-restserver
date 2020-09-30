@@ -2,39 +2,51 @@ const express = require('express');
 const bcript = require('bcrypt'); //paquete para encriptar datos (contraseña en este caso)
 const _ = require('underscore'); // paquete para validaciones para peticiones 'put' 'actualizar'
 const app = express();
+const { verificaToken } = require('../middlewares/autenticacion');
+const { verificaRoleAdmin } = require('../middlewares/autenticacion');
 const Usuarios = require('../models/usuario');
 const usuario = require('../models/usuario');
 
 
 
+//'verificaToken' es un middleware va como segundo parametro y si se ejecuta, el siguiene parametro
+//no se 'funcion anonima' no se ejecutara si no sellama al'next' del middleware 
+app.get('/usuarios', verificaToken, function(req, res) {
 
-app.get('/usuarios', function(req, res) {
-    /* res.json(req.query); */ //la el atributo 'query' del 'req' devuelve las variebles enviadas por el ususario
-    let desde = req.query.desde || 0;
-    desde = Number(desde);
+        return res.json({
+            usuario: req.usuario,
+            nombre: req.usuario.nombre,
+            email: req.usuario.email
+        });
 
-    let limite = req.query.limite || 5;
-    limite = Number(limite);
 
-    //busca usuarios con 'role'  de 'actor' y solo me retornara las propiedades 'nombre' 'email' 
-    Usuarios.find({ /* role: 'actor' */ }, 'nombre email') //el modelo define el metodo que busca los reguistros
-        /* .skip(desde)
-        .limit(limite) */
-        .exec((err, usuarios) => { // ejecuta la query
-            if (err) {
-                return res.status(400).json({
-                    ok: false,
-                    err
-                });
-            }
 
-            res.json({
-                ok: true,
-                usuarios
+        /* res.json(req.query); */ //la el atributo 'query' del 'req' devuelve las variebles enviadas por el ususario
+        let desde = req.query.desde || 0;
+        desde = Number(desde);
+
+        let limite = req.query.limite || 5;
+        limite = Number(limite);
+
+        //busca usuarios con 'role'  de 'actor' y solo me retornara las propiedades 'nombre' 'email' 
+        Usuarios.find({ /* role: 'actor' */ }, 'nombre email') //el modelo define el metodo que busca los reguistros
+            /* .skip(desde)
+            .limit(limite) */
+            .exec((err, usuarios) => { // ejecuta la query
+                if (err) {
+                    return res.status(400).json({
+                        ok: false,
+                        err
+                    });
+                }
+
+                res.json({
+                    ok: true,
+                    usuarios
+                })
             })
-        })
-})
-app.post('/usuarios', function(req, res) {
+    }) // arreglo de middlewest
+app.post('/usuarios', [verificaToken, verificaRoleAdmin], function(req, res) {
 
     let body = req.body; //obtiene el cuerpo de la peticon del navegador 
 
@@ -79,7 +91,7 @@ app.post('/usuarios', function(req, res) {
 })
 
 // metodo 'put' para actualizar infromacion  
-app.put('/usuarios/:id', function(req, res) {
+app.put('/usuarios/:id', [verificaToken, verificaRoleAdmin], function(req, res) {
     // con la propiedad 'params' del 'req' se obtienen los valores de los parametros enviados
     let id = req.params.id;
     let body = req.body;
@@ -106,7 +118,7 @@ app.put('/usuarios/:id', function(req, res) {
     })
 
 })
-app.delete('/usuarios/:id', function(req, res) {
+app.delete('/usuarios/:id', [verificaToken, verificaRoleAdmin], function(req, res) {
     let id = req.params.id;
     let estado = {
         estado: false
