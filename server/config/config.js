@@ -48,6 +48,15 @@ if (process.env.NODE_ENV === 'dev') {
     //para este caso'mongodb+srv://ericson:JJ2y0Dn9Vj0SyB3H@cluster0.alcjq.mongodb.net/cafe' que
     //es la ruta donde se encuenra la base de datos 
 }
-
-
 process.env.URLDB = urlDB;
+
+
+
+
+
+// ===========================
+//     Google Client ID
+// ===========================
+
+
+process.env.CLIENT_ID = process.env.CLIENT_ID || '79554396370-4btgo0v7ee2trlreg6t63g1oritlo0jt.apps.googleusercontent.com'

@@ -30,7 +30,7 @@ let verificaToken = (req, res, next) => {
 }
 
 let verificaRoleAdmin = (req, res, next) => {
-    let usuario = req.body;
+    let usuario = req.usuario;
 
     if (usuario.role === 'ADMIN_ROLE') {
         next();

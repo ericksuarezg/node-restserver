@@ -1,5 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const path = require('path'); //paquete nativo de Node  para crear path correctamente al llamra al 
+//a la carpeta 'public' con la funcion app.use(express.static(__dirname + '../public')) con el html
 require('./config/config');
 
 const app = express();
@@ -10,7 +12,22 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // midelweit para las peticiones con parametros eb archivo jeson
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+
+//===============================================================================================
+//   habilitar la carpeta public para que sea accedida desde cualquier lugar
+//===============================================================================================
+
+/* app.use(express.static(path.resolve(__dirname, './public'))); */
+app.use(express.static(__dirname + '/public'));
+
+//console.log(path.resolve(__dirname, '../public'));//metodo de Node para verificar un path
+
+
+
+
+
+
 
 app.use(require('./routes/index')); //importando todo el archivo 'index' dentro del midelwait
 
