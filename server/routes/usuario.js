@@ -5,7 +5,7 @@ const app = express();
 const { verificaToken } = require('../middlewares/autenticacion');
 const { verificaRoleAdmin } = require('../middlewares/autenticacion');
 const Usuarios = require('../models/usuario');
-const usuario = require('../models/usuario');
+//const usuario = require('../models/usuario');
 
 
 
