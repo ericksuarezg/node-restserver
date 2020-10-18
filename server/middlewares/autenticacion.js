@@ -48,7 +48,36 @@ let verificaRoleAdmin = (req, res, next) => {
 
 }
 
+
+//=======================
+// verificar token para imagen por url
+//=======================
+
+let verificaTokenUrlImg = (req, res, next) => {
+    //NOTA este token de debe ser pegado como parametro en la pagina html en la etiqueta 'img scr'
+    let token = req.query.token;
+    //verificando el token
+
+    jwt.verify(token, process.env.SEED, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({
+                ok: false,
+                err: {
+                    message: 'Token no valido'
+                }
+            });
+        }
+
+        req.usuario = decoded.usuario; //si la verificacion tiene exito me devuelve el token decodificado
+        // por ende el 'decoded.usuario' almacena el 'payload'del token
+        next();
+    });
+
+
+}
+
 module.exports = {
     verificaToken,
-    verificaRoleAdmin
+    verificaRoleAdmin,
+    verificaTokenUrlImg
 }
